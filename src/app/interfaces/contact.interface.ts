@@ -10,3 +10,10 @@ export interface Contact {
     notas?: string;
     categorias?: number[];
 }
+//TODO: Se aumenta para presentar contactos en home
+export interface ContactResponse {
+    estado: boolean;
+    mensaje: string;
+    datos: Contact[];
+    totalPages?: number;
+  }

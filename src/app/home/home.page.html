@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button *ngIf="isAuthenticated"></ion-menu-button>
+    </ion-buttons>
     <ion-title>
       Agenda Electrónica
     </ion-title>
@@ -31,20 +34,41 @@
   </ng-container>
 
   <ng-container *ngIf="isAuthenticated">
-    <ion-list>
-      <ion-item *ngFor="let contact of contacts">
+    <ion-searchbar
+      placeholder="Buscar contactos"
+      [value]="searchTerm"
+      (ionInput)="onSearchChange($event)"
+      [debounce]="500">
+    </ion-searchbar>
+
+    <ion-list *ngIf="!isLoading">
+      <ion-item *ngFor="let contact of contacts" [routerLink]="['/contacts', contact.codigo]">
         <ion-avatar slot="start">
           <img [src]="contact.avatar || 'assets/avatar-placeholder.png'" alt="Contact avatar">
         </ion-avatar>
         <ion-label>
           <h2>{{ contact.nombre }} {{ contact.apellido }}</h2>
           <p>{{ contact.telefono }}</p>
+          <p>{{ contact.correo }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="contacts.length === 0">
+        <ion-label class="ion-text-center">
+          No se encontraron contactos
         </ion-label>
       </ion-item>
     </ion-list>
 
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Cargando más contactos...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button>
+      <ion-fab-button routerLink="/contacts/create">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab>

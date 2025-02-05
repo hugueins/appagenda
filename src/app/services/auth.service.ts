@@ -4,17 +4,18 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Preferences } from '@capacitor/preferences';
 import { environment } from '../../environments/environment';
+import { User } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private apiUrl = environment.apiUrl;
-  private currentUserSubject: BehaviorSubject<any>;
-  public currentUser: Observable<any>;
+  private currentUserSubject: BehaviorSubject<User | null>;
+  public currentUser: Observable<User | null>;
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<any>(null);
+    this.currentUserSubject = new BehaviorSubject<User | null>(null);
     this.currentUser = this.currentUserSubject.asObservable();
     this.checkToken();
   }
@@ -46,11 +47,11 @@ export class AuthService {
   }
 
   register(userData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/register`, userData);
+    return this.http.post<any>(`${this.apiUrl}/persona/register`, userData);
   }
 
   resetPassword(resetData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/reset-password`, resetData);
+    return this.http.post<any>(`${this.apiUrl}/persona/reset-password`, resetData);
   }
 
   async logout() {
