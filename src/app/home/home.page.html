@@ -1,20 +1,52 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      Blank
+      Agenda Electrónica
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ng-container *ngIf="!isAuthenticated">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Bienvenido a la Agenda Electrónica</ion-card-title>
+        <ion-card-subtitle>Inicia sesión para ver tus contactos</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-button expand="block" (click)="goToLogin()">
+          <ion-icon name="log-in-outline" slot="start"></ion-icon>
+          Iniciar Sesión
+        </ion-button>
+        <ion-button expand="block" fill="outline" (click)="goToRegister()">
+          <ion-icon name="person-add-outline" slot="start"></ion-icon>
+          Crear Cuenta
+        </ion-button>
+        <ion-button expand="block" fill="clear" (click)="goToResetPassword()">
+          <ion-icon name="key-outline" slot="start"></ion-icon>
+          Recuperar Contraseña
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ng-container *ngIf="isAuthenticated">
+    <ion-list>
+      <ion-item *ngFor="let contact of contacts">
+        <ion-avatar slot="start">
+          <img [src]="contact.avatar || 'assets/avatar-placeholder.png'" alt="Contact avatar">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ contact.nombre }} {{ contact.apellido }}</h2>
+          <p>{{ contact.telefono }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button>
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ng-container>
 </ion-content>

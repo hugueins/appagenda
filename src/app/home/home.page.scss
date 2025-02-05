@@ -25,3 +25,27 @@
 #container a {
   text-decoration: none;
 }
+ion-card {
+  margin: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+ion-button {
+  margin: 10px 0;
+  margin: 10px 0;
+  
+  &[fill="clear"] {
+    --color: var(--ion-color-medium);
+    font-size: 0.9em;
+  }
+}
+
+ion-avatar {
+  width: 50px;
+  height: 50px;
+}
+
+ion-fab {
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
