@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 
@@ -18,6 +18,7 @@ export class ResetPasswordPage implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private loadingController: LoadingController,
     private toastController: ToastController
   ) {
@@ -28,7 +29,16 @@ export class ResetPasswordPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // Obtener la cédula de los parámetros de la URL si existe
+    this.route.queryParams.subscribe(params => {
+      if (params['cedula']) {
+        this.resetForm.patchValue({
+          cedula: params['cedula']
+        });
+      }
+    });
+  }
 
   async resetPassword() {
     if (this.resetForm.valid) {
